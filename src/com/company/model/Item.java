@@ -2,7 +2,7 @@ package com.company.model;
 
 public class Item {
 
-    private double size;
+    protected double size;
 
     public Item(double size) {
         this.size = size;
