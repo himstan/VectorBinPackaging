@@ -7,7 +7,7 @@ import java.util.List;
 public class Bin {
 
     private double capacity;
-    private List<Item> items;
+    private final List<Item> items;
 
     public Bin() {
         this.capacity = 1;
@@ -37,6 +37,14 @@ public class Bin {
 
     public double getRemainingCapacity() {
         return capacity - items.stream().mapToDouble(Item::getSize).sum();
+    }
+
+    public int getItemAmount() {
+        return items.size();
+    }
+
+    public List<Item> getItems() {
+        return items;
     }
 
     @Override
