@@ -12,8 +12,7 @@ import java.util.stream.Collectors;
 
 public class HarmonicBinPackagingSolverImpl extends BinPackagingSolver {
 
-    private int k;
-    private Map<Integer, List<Bin>> harmonicBins = new HashMap<>();
+    private final int k;
 
     public HarmonicBinPackagingSolverImpl(int k) {
         this.k = k;
@@ -26,7 +25,7 @@ public class HarmonicBinPackagingSolverImpl extends BinPackagingSolver {
 
     @Override
     protected List<Bin> solve(Collection<Item> items) throws CantFitItemException {
-        initBins();
+        final var harmonicBins = createBinClassMap();
         for (Item item : items) {
             final int binCategory = getBinCategoryForItem(item);
             final Bin topBin = getLatestBin(harmonicBins.get(binCategory));
@@ -39,18 +38,24 @@ public class HarmonicBinPackagingSolverImpl extends BinPackagingSolver {
         return harmonicBins.values().stream().flatMap(List::stream).collect(Collectors.toList());
     }
 
-    private int getBinCategoryForItem(final Item item) {
-        final double itemSize = item.getSize();
-        final int asd = (int) Math.floor(1 / itemSize);
-        return Math.min(asd, k) - 1;
+    @Override
+    public String getName() {
+        return "Harmonic-k";
     }
 
-    private void initBins() {
-        harmonicBins.clear();
+    private int getBinCategoryForItem(final Item item) {
+        final double itemSize = item.getSize();
+        final int binCategory = (int) Math.floor(1 / itemSize);
+        return Math.min(binCategory, k) - 1;
+    }
+
+    private Map<Integer, List<Bin>> createBinClassMap() {
+        final Map<Integer, List<Bin>> harmonicBins = new HashMap<>();
         for (int i = 0; i < k; i++) {
             List<Bin> bins = new ArrayList<>();
             addNewBin(bins);
             harmonicBins.put(i, bins);
         }
+        return harmonicBins;
     }
 }

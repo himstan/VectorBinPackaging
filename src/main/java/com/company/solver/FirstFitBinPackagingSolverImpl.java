@@ -39,4 +39,9 @@ public class FirstFitBinPackagingSolverImpl extends BinPackagingSolver {
         }
         return bins;
     }
+
+    @Override
+    public String getName() {
+        return "FirstFit";
+    }
 }

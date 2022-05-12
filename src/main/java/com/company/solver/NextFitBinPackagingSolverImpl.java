@@ -3,16 +3,19 @@ package com.company.solver;
 import com.company.exception.CantFitItemException;
 import com.company.model.Bin;
 import com.company.model.Item;
+import lombok.NoArgsConstructor;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+@NoArgsConstructor
 public class NextFitBinPackagingSolverImpl extends BinPackagingSolver {
+
 
     public NextFitBinPackagingSolverImpl(boolean isSorted) {
         super(isSorted);
     }
-
     @Override
     protected List<Bin> solve(final Collection<Item> items) throws CantFitItemException {
         List<Bin> bins = new ArrayList<>();
@@ -27,5 +30,10 @@ public class NextFitBinPackagingSolverImpl extends BinPackagingSolver {
             latestBin.addItem(item);
         }
         return bins;
+    }
+
+    @Override
+    public String getName() {
+        return "NextFit";
     }
 }

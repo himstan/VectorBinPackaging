@@ -1,25 +1,23 @@
 package com.company;
 
 import com.company.export.ResultsExporter;
-import com.company.export.impl.ResultsExporterImpl;
+import com.company.export.impl.ExcelResultsExporterImpl;
 import com.company.model.BinPackagingStats;
-import com.company.model.Item;
 import com.company.normalizer.ItemNormalizer;
 import com.company.normalizer.SumNormalizer;
-import com.company.solver.BestFitBinPackagingSolverImpl;
 import com.company.solver.FirstFitBinPackagingSolverImpl;
-import com.company.solver.NextFitBinPackagingSolverImpl;
 
-import java.util.Set;
+import java.util.List;
+import java.util.Vector;
 
 public class Main {
 
     public static void main(String[] args) {
-
-        Set<Item> items = Set.of(new Item(0.4), new Item(0.1), new Item(0.6), new Item(0.8), new Item(0.3));
-        BinPackagerRunner runner = new BinPackagerRunner(new NextFitBinPackagingSolverImpl(true));
-        BinPackagingStats vectorBinPackagingStats = runner.runBinPackaging(items);
-        ResultsExporter resultsExporter = new ResultsExporterImpl();
-        resultsExporter.exportToFile(vectorBinPackagingStats);
+        BinPackagerRunner runner = new BinPackagerRunner(new FirstFitBinPackagingSolverImpl(true));
+        ItemNormalizer itemNormalizer = new SumNormalizer();
+        Vector<Double> scalingVector = new Vector<>(List.of(2d,1d));
+        BinPackagingStats binPackagingStats = runner.runVectorBinPackaging(100, itemNormalizer, scalingVector);
+        ResultsExporter resultsExporter = new ExcelResultsExporterImpl();
+        resultsExporter.exportToFile(binPackagingStats);
     }
 }

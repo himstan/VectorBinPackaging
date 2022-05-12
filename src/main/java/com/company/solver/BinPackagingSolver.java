@@ -3,6 +3,8 @@ package com.company.solver;
 import com.company.exception.CantFitItemException;
 import com.company.model.Bin;
 import com.company.model.Item;
+import lombok.extern.log4j.Log4j;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -10,6 +12,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Log4j
 public abstract class BinPackagingSolver {
 
     private final boolean isSorted;
@@ -31,12 +34,18 @@ public abstract class BinPackagingSolver {
         try {
             return isSorted ? solve(sortItems(items)) : solve(items);
         } catch (CantFitItemException e) {
-            System.out.println(e.getMessage());
+            log.error(e.getMessage());
         }
         return Collections.emptyList();
     }
 
+    public String getSolverAlgorithmName() {
+        return getName() + (isSorted ? "Desc" : "");
+    }
+
     abstract protected List<Bin> solve(final Collection<Item> items) throws CantFitItemException;
+
+    abstract protected String getName();
 
     protected Bin addNewBin(final List<Bin> bins) {
         Bin newBin = new Bin();

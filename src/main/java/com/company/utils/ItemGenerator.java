@@ -3,13 +3,8 @@ package com.company.utils;
 import com.company.model.Item;
 import com.company.model.VectorItem;
 import com.company.normalizer.ItemNormalizer;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+
+import java.util.*;
 
 public class ItemGenerator {
     private static final Random random = new Random();
@@ -17,22 +12,26 @@ public class ItemGenerator {
     public static Set<Item> generateItems(int itemAmount) {
         Set<Item> items = new HashSet<>();
         for (int i = 0; i < itemAmount; i++) {
-            items.add(new Item(random.nextDouble()));
+            items.add(new Item(getDoubleInRange(0, 0.8)));
         }
         return items;
     }
 
     public static Set<Item> generateItems(int itemAmount, int dimensions, final ItemNormalizer itemNormalizer) {
+        return generateItems(itemAmount, dimensions, itemNormalizer, null);
+    }
+
+    public static Set<Item> generateItems(int itemAmount, int dimensions, final ItemNormalizer itemNormalizer, final Vector<Double> scalingVector) {
         Set<Item> items = new HashSet<>();
         for (int i  = 0; i < itemAmount; i++) {
-            items.add(new VectorItem(generateValues(dimensions), itemNormalizer));
+            items.add(new VectorItem(generateValues(dimensions), scalingVector, itemNormalizer));
         }
         return items;
     }
 
-    private static Collection<Double> generateValues(int dimensions) {
-        final List<Double> values = new ArrayList<>();
-        final double maxValueForDimension = 1f / dimensions;
+    private static Vector<Double> generateValues(int dimensions) {
+        final Vector<Double> values = new Vector<>();
+        final double maxValueForDimension = 1f / (dimensions + 1);
         for (int i = 0; i < dimensions; i++) {
             values.add(getDoubleInRange(0, maxValueForDimension));
         }
@@ -40,6 +39,6 @@ public class ItemGenerator {
     }
 
     private static double getDoubleInRange(double rangeMin, double rangeMax) {
-        return rangeMin + (rangeMax - rangeMin) * random.nextDouble();
+        return MathUtil.round(rangeMin + (rangeMax - rangeMin) * random.nextDouble(), 2);
     }
 }

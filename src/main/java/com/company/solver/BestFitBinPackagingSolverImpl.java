@@ -3,6 +3,8 @@ package com.company.solver;
 import com.company.exception.CantFitItemException;
 import com.company.model.Bin;
 import com.company.model.Item;
+import com.company.utils.MathUtil;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -30,6 +32,11 @@ public class BestFitBinPackagingSolverImpl extends BinPackagingSolver{
         return bins;
     }
 
+    @Override
+    public String getName() {
+        return "BestFit";
+    }
+
     private Bin findBestFitForItem(final List<Bin> bins, final Item item) {
         Bin bestFit = null;
         double bestFitCapacity = Integer.MAX_VALUE;
@@ -46,6 +53,6 @@ public class BestFitBinPackagingSolverImpl extends BinPackagingSolver{
     }
 
     private double getRemainingCapacityWithItem(final Bin bin, final Item item) {
-        return bin.getRemainingCapacity() + item.getSize();
+        return bin.getRemainingCapacity() - item.getSize();
     }
 }

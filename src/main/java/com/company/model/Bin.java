@@ -1,6 +1,8 @@
 package com.company.model;
 
 import com.company.exception.CantFitItemException;
+import com.company.utils.MathUtil;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,13 +12,17 @@ public class Bin {
     private final List<Item> items;
 
     public Bin() {
-        this.capacity = 1;
+        setCapacity(1);
         this.items = new ArrayList<>();
     }
 
     public Bin(double capacity) {
         this();
-        this.capacity = capacity;
+        setCapacity(capacity);
+    }
+
+    private void setCapacity(final double capacity) {
+        this.capacity = MathUtil.round(capacity, 2);
     }
 
     public void addItem(Item item) throws CantFitItemException {
@@ -32,11 +38,11 @@ public class Bin {
     }
 
     public double getCapacity() {
-        return capacity;
+        return MathUtil.round(capacity, 2);
     }
 
     public double getRemainingCapacity() {
-        return capacity - items.stream().mapToDouble(Item::getSize).sum();
+        return MathUtil.round(capacity - items.stream().mapToDouble(Item::getSize).sum(), 2);
     }
 
     public int getItemAmount() {
